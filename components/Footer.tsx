@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Mail, Instagram, Linkedin, Twitter, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"; // Assuming you have an Input component
-import { IconMail } from "@tabler/icons-react";
+import { IconMail, IconSend } from "@tabler/icons-react";
 
 export const Footer = () => {
   const utilityLinks = [
@@ -25,7 +25,7 @@ export const Footer = () => {
         {/* Top Section: Newsletter & Brand Message */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-gray-700 pb-10 mb-10">
           <div className="mb-8 lg:mb-0">
-            <h3 className="text-3xl text-white mb-2">Stay Illuminated.</h3>
+            <h3 className="text-2xl text-white mb-2">Stay Illuminated.</h3>
             <p className="text-gray-400 max-w-lg">
               Subscribe for exclusive insights, creator spotlights, and the
               latest in beauty-tech innovation.
@@ -40,7 +40,7 @@ export const Footer = () => {
               className="flex-grow bg-transparent"
             />
             <Button className="ml-1" size={"icon-lg"}>
-              <Send className="w-5 h-5" />
+              <IconSend className="w-5 h-5" />
             </Button>
           </div>
         </div>

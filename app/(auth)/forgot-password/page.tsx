@@ -1,5 +1,3 @@
-import { PageHeader } from "@/components/PageHeader";
-import React from "react";
 import { ForgotPasswordForm } from "../_components/ForgotPasswordForm";
 import { Logo } from "@/components/Logo";
 

@@ -41,40 +41,6 @@ import {
   IconShoppingBag,
   IconMail,
 } from "@tabler/icons-react";
-import { Award } from "lucide-react";
-
-export const homeNavLinks = [
-  { slug: "/", label: "Home", icon: IconHome },
-  { slug: "/about", label: "About", icon: IconAlertCircle },
-  { slug: "/services", label: "Services", icon: IconBriefcase },
-  { slug: "/marketplace", label: "Marketplace", icon: IconShoppingBag },
-  { slug: "/contact", label: "Contact", icon: IconMail },
-];
-
-export const homeNavLinksMobile = [
-  { slug: "/", label: "Home", icon: IconHome },
-  { slug: "/about", label: "About", icon: IconAlertCircle },
-  {
-    slug: "/ecosystem",
-    label: "Ecosystem",
-    icon: IconStackMiddle,
-    comingSoon: true,
-  },
-  {
-    slug: "/services",
-    label: "Services",
-    icon: IconBriefcase,
-    comingSoon: true,
-  },
-  {
-    slug: "/marketplace",
-    label: "Marketplace",
-    icon: IconShoppingBag,
-    comingSoon: true,
-  },
-  { slug: "/community", label: "Community", icon: IconUsers, comingSoon: true },
-  { slug: "/contact", label: "Contact", icon: IconMail },
-];
 
 export const teamMembers = [
   {

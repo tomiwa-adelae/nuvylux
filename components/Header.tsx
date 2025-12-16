@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { homeNavLinks } from "@/constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileNavbar } from "./MobileNavbar";
+import { homeNavLinks } from "@/constants/nav-links";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -15,7 +15,7 @@ export const Header = () => {
     pathname === slug || pathname.startsWith(`${slug}/`);
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-primary relative overflow-hidden border-b border-white/10">
+    <header className="fixed top-0 z-50 w-full bg-primary overflow-hidden border-b border-white/10">
       <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/10 to-transparent pointer-events-none" />
 
       <div className="container mx-auto container h-20 flex items-center justify-between">

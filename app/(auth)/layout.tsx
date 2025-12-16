@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
 import { Testimonials } from "./_components/Testimonials";
 
 export default function Layout({

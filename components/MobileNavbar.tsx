@@ -12,12 +12,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { homeNavLinksMobile } from "@/constants";
 import { IconLogout, IconMenu2 } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "./Logo";
+import { homeNavLinksMobile } from "@/constants/nav-links";
 
 export function MobileNavbar() {
   const [open, setOpen] = useState(false);

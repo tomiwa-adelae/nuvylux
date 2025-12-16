@@ -9,7 +9,7 @@ export default function Layout({
   return (
     <div>
       <Header />
-      {children}
+      <div className="pt-20">{children}</div>
       <Footer />
     </div>
   );

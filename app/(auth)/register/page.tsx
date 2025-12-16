@@ -1,6 +1,4 @@
 import { Logo } from "@/components/Logo";
-import React from "react";
-import { LoginForm } from "../_components/LoginForm";
 import { RegisterForm } from "../_components/RegisterForm";
 
 const page = () => {
