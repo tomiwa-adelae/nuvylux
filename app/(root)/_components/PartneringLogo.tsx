@@ -1,5 +1,3 @@
-import React from "react";
-
 export const PartneringLogo = () => {
   return (
     <section className="dark:bg-muted/50 bg-muted/50 relative py-12">
