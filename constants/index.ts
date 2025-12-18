@@ -87,6 +87,8 @@ export const teamMembers = [
   },
 ];
 
+export const DEFAULT_PROFILE_IMAGE = "/assets/images/profile-img.jpg";
+
 export const contactFormSubjects = [
   { value: "Creator Inquiry", label: "Creator Inquiry / Verification" },
   { value: "Partnership", label: "Partnership / Investment" },
@@ -118,3 +120,46 @@ export const testimonials = [
     portfolio: "Fashion Creative",
   },
 ];
+
+export const countries = ["Nigeria"];
+export const states = [
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
+  "FCT (Abuja)",
+] as const;
+
+export const genders = ["Male", "Female"];

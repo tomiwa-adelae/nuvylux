@@ -4,6 +4,8 @@ import { Testimonials } from "./_components/Testimonials";
 import { toast } from "sonner";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
+import { Logo } from "@/components/Logo";
+import { PageGradient } from "@/components/PageGradient";
 
 export default function Layout({
   children,
@@ -14,7 +16,7 @@ export default function Layout({
   const router = useRouter();
 
   useEffect(() => {
-    if (user) router.push("/dashboard");
+    // if (user) router.push("/dashboard");
   }, [user]);
 
   useEffect(() => {
@@ -36,7 +38,8 @@ export default function Layout({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2">
       <Testimonials />
-      <div className="flex min-h-[80vh] w-full items-center justify-center">
+      <div className="flex relative min-h-[80vh] w-full items-center justify-center">
+        <PageGradient />
         {children}
       </div>
     </div>

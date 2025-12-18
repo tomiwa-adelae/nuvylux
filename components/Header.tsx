@@ -7,12 +7,16 @@ import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileNavbar } from "./MobileNavbar";
 import { homeNavLinks } from "@/constants/nav-links";
+import { useAuth } from "@/store/useAuth";
+import { UserDropdown } from "./UserDropdown";
 
 export const Header = () => {
   const pathname = usePathname();
 
   const isActive = (slug: string) =>
     pathname === slug || pathname.startsWith(`${slug}/`);
+
+  const { user } = useAuth();
 
   return (
     <header className="fixed top-0 z-50 w-full bg-primary overflow-hidden border-b border-white/10">
@@ -44,18 +48,24 @@ export const Header = () => {
 
         <div className="flex items-center space-x-1">
           <ThemeToggle />
-          <Button
-            variant="ghost"
-            size="md"
-            className="hidden md:inline-flex text-white"
-            asChild
-          >
-            <Link href="/login">Login</Link>
-          </Button>
+          {user ? (
+            <UserDropdown />
+          ) : (
+            <>
+              <Button
+                variant="ghost"
+                size="md"
+                className="hidden md:inline-flex text-white"
+                asChild
+              >
+                <Link href="/login">Login</Link>
+              </Button>
 
-          <Button asChild variant={"white"} size="md">
-            <Link href="/register">Join Now</Link>
-          </Button>
+              <Button asChild variant={"white"} size="md">
+                <Link href="/register">Join Now</Link>
+              </Button>
+            </>
+          )}
           <MobileNavbar />
         </div>
       </div>

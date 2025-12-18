@@ -130,6 +130,32 @@ export const NewPasswordSchema = z
     path: ["confirmPassword"], // 👈 attach the error to confirmPassword
   });
 
+export const OnboardingProfileFormSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First name must be at least 2 characters.",
+  }),
+  lastName: z.string().min(2, {
+    message: "Last name must be at least 2 characters.",
+  }),
+  email: z.string().email().min(2, {
+    message: "Email must be at least 2 characters.",
+  }),
+  address: z
+    .string()
+    .min(2, { message: "Address must be at least 2 characters" }),
+  city: z.string().min(2, { message: "City must be at least 2 characters" }),
+  state: z.string().min(2, { message: "State must be selected" }),
+  country: z.string().min(2, { message: "Country must be selected" }),
+  image: z.string().optional(),
+  dob: z.any().optional(),
+  gender: z.string().optional(),
+  phoneNumber: z
+    .string()
+    .min(7, "Phone number required")
+    .optional()
+    .or(z.literal("")), // allow blank but treat as invalid
+});
+
 export type LoginFormSchemaType = z.infer<typeof LoginFormSchema>;
 export type RegisterFormSchemaType = z.infer<typeof RegisterFormSchema>;
 export type ContactFormSchemaType = z.infer<typeof contactFormSchema>;
@@ -141,3 +167,6 @@ export type ResetPasswordFormSchemaType = z.infer<
 >;
 export type VerifyCodeSchemaType = z.infer<typeof VerifyCodeSchema>;
 export type NewPasswordSchemaType = z.infer<typeof NewPasswordSchema>;
+export type OnboardingProfileFormSchemaType = z.infer<
+  typeof OnboardingProfileFormSchema
+>;

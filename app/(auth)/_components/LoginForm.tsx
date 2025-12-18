@@ -55,7 +55,7 @@ export const LoginForm = () => {
         setUser(res?.data?.user);
         toast.success(res?.data?.message);
 
-        router.push("/dashboard");
+        // router.push("/dashboard");
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "Internal server error");
       }

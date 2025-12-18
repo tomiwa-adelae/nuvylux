@@ -99,7 +99,6 @@ export const RegisterForm = () => {
         toast.success(res?.data?.message);
         router.push("/onboarding");
       } catch (error: any) {
-        console.log(error);
         toast.error(error?.response?.data?.message || "Internal server error");
       }
     });
