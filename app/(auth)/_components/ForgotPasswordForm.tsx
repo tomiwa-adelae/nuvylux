@@ -20,8 +20,12 @@ import {
 import Link from "next/link";
 import { useTransition } from "react";
 import { Loader } from "@/components/Loader";
+import api from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export function ForgotPasswordForm() {
+  const router = useRouter();
+
   const [pending, startTransition] = useTransition();
 
   const form = useForm<ForgotPasswordFormSchemaType>({
@@ -31,8 +35,18 @@ export function ForgotPasswordForm() {
     },
   });
 
-  function onSubmit(data: ForgotPasswordFormSchemaType) {}
-
+  function onSubmit(data: ForgotPasswordFormSchemaType) {
+    startTransition(async () => {
+      try {
+        const res = await api.post("/auth/forgot-password", data);
+        // setUser(res.data.user);
+        toast.success(res.data.message);
+        router.replace(`/verify-code?email=${data.email}`);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      }
+    });
+  }
   return (
     <div className="">
       <Form {...form}>

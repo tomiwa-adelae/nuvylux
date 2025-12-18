@@ -50,7 +50,7 @@ export const Header = () => {
             className="hidden md:inline-flex text-white"
             asChild
           >
-            <Link href="/login">Sign In</Link>
+            <Link href="/login">Login</Link>
           </Button>
 
           <Button asChild variant={"white"} size="md">

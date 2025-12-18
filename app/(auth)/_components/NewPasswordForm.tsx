@@ -30,6 +30,8 @@ import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { cn, maskEmail } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
+import api from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 interface Props {
   email: string;
@@ -37,6 +39,7 @@ interface Props {
 }
 
 export const NewPasswordForm = ({ email, otp }: Props) => {
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
 
   const form = useForm<NewPasswordSchemaType>({
@@ -87,8 +90,17 @@ export const NewPasswordForm = ({ email, otp }: Props) => {
     return "Strong password";
   };
 
-  function onSubmit(data: NewPasswordSchemaType) {}
-
+  function onSubmit(data: NewPasswordSchemaType) {
+    startTransition(async () => {
+      try {
+        const res = await api.post("/auth/set-new-password", data);
+        toast.success(res.data.message);
+        router.push(`/new-password/success?email=${data.email}`);
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    });
+  }
   return (
     <div>
       <div className="text-center mb-4">

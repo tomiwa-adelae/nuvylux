@@ -30,8 +30,15 @@ import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
+import api from "@/lib/api";
+import { useAuth } from "@/store/useAuth";
+import { useRouter } from "next/navigation";
 
 export const RegisterForm = () => {
+  const router = useRouter();
+
+  const setUser = useAuth((s) => s.setUser);
+
   const [pending, startTransition] = useTransition();
 
   const form = useForm<RegisterFormSchemaType>({
@@ -84,7 +91,19 @@ export const RegisterForm = () => {
     return "Strong password";
   };
 
-  function onSubmit(data: RegisterFormSchemaType) {}
+  function onSubmit(data: RegisterFormSchemaType) {
+    startTransition(async () => {
+      try {
+        const res = await api.post("/auth/register", data);
+        setUser(res?.data?.user);
+        toast.success(res?.data?.message);
+        router.push("/onboarding");
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || "Internal server error");
+      }
+    });
+  }
 
   return (
     <Form {...form}>
@@ -288,7 +307,7 @@ export const RegisterForm = () => {
         <Button
           className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
           type="submit"
-          disabled={pending}
+          disabled={pending || !acceptTerms}
         >
           {pending ? <Loader text="Loading..." /> : "Register"}
         </Button>

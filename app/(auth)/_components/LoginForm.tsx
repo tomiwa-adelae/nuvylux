@@ -25,8 +25,14 @@ import {
 import { Loader } from "@/components/Loader";
 import Link from "next/link";
 import Image from "next/image";
+import api from "@/lib/api";
+import { useAuth } from "@/store/useAuth";
+import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
+  const router = useRouter();
+
+  const setUser = useAuth((s) => s.setUser);
   const [pending, startTransition] = useTransition();
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -40,8 +46,21 @@ export const LoginForm = () => {
     },
   });
 
-  function onSubmit(data: LoginFormSchemaType) {}
+  function onSubmit(data: LoginFormSchemaType) {
+    startTransition(async () => {
+      try {
+        const res = await api.post("/auth/login", data);
 
+        // Normal login (no 2FA required)
+        setUser(res?.data?.user);
+        toast.success(res?.data?.message);
+
+        router.push("/dashboard");
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message || "Internal server error");
+      }
+    });
+  }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -52,12 +71,7 @@ export const LoginForm = () => {
             <FormItem>
               <FormLabel>Email address</FormLabel>
               <FormControl>
-                <Input
-                  className="bg-input border-border"
-                  type="email"
-                  placeholder="john@gmail.com"
-                  {...field}
-                />
+                <Input type="email" placeholder="john@gmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -73,7 +87,6 @@ export const LoginForm = () => {
                 <div className="relative">
                   <Input
                     type={isVisible ? "text" : "password"}
-                    className="bg-input border-border"
                     placeholder="Enter your password"
                     {...field}
                   />

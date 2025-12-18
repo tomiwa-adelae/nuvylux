@@ -20,12 +20,15 @@ import { Loader } from "@/components/Loader";
 import { cn, formatTime, maskEmail } from "@/lib/utils";
 import { IconRefreshDot } from "@tabler/icons-react";
 import { OTPInput, SlotProps } from "input-otp";
+import api from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 interface Props {
   email: string;
 }
 
 export function VerifyCodeForm({ email }: Props) {
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [resendPending, startResendTransition] = useTransition();
 
@@ -58,21 +61,31 @@ export function VerifyCodeForm({ email }: Props) {
     },
   });
 
-  const handleResendCode = () => {
-    // startResendTransition(async () => {
-    //   try {
-    //     const res = await api.post("/auth/forgot-password", { email });
-    //     // setUser(res.data.user);
-    //     toast.success(res.data.message);
-    //     setTimeLeft(180);
-    //     setIsCounting(true);
-    //   } catch (error: any) {
-    //     toast.error(error.response.data.message);
-    //   }
-    // });
-  };
+  function onSubmit(data: VerifyCodeSchemaType) {
+    startTransition(async () => {
+      try {
+        const res = await api.post("/auth/verify-code", data);
+        toast.success(res.data.message);
+        router.replace(`/new-password?email=${data.email}&otp=${data.otp}`);
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    });
+  }
 
-  function onSubmit(data: VerifyCodeSchemaType) {}
+  const handleResendCode = () => {
+    startResendTransition(async () => {
+      try {
+        const res = await api.post("/auth/forgot-password", { email });
+        // setUser(res.data.user);
+        toast.success(res.data.message);
+        setTimeLeft(180);
+        setIsCounting(true);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      }
+    });
+  };
 
   return (
     <div className="">

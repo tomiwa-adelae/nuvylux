@@ -8,7 +8,7 @@ type SearchParams = Promise<{
 const page = async ({ searchParams }: { searchParams: SearchParams }) => {
   const { email } = await searchParams;
   return (
-    <div className="py-32">
+    <div className="py-32 w-full">
       <div className="container">
         <div className="md:hidden flex items-center justify-center mb-3">
           <Logo color="black" />

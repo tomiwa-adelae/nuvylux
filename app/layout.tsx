@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import Providers from "./providers";
+import { Toaster } from "sonner";
 
 const outfits = Outfit({
   subsets: ["latin"],
@@ -27,7 +29,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Providers>
+            {children}
+            <Toaster position="top-center" />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>
