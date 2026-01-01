@@ -20,7 +20,7 @@ export const TimelineSection = () => {
       color: "text-primary", // Till Green
     },
     {
-      year: "2025 (Launch)",
+      year: "2026 (Launch)",
       title: "Marketplace & AI Integration",
       description:
         "Public launch of the NUVYLUX Marketplace (MVP), Phase 1 AI Skin Analysis release, and Auranova Agency client acquisition.",

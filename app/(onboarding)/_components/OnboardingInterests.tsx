@@ -55,7 +55,6 @@ export const OnboardingInterests = () => {
 
   const handleSubmit = () => {
     startTransition(async () => {
-      console.log(selectedInterests);
       try {
         const res = await api.post("/onboarding/interests", selectedInterests);
 

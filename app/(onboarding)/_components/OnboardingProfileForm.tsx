@@ -46,13 +46,9 @@ export const OnboardingProfileForm = () => {
   const { user } = useAuth();
   const setUser = useAuth((s) => s.setUser);
 
-  console.log(user);
-
   const [pending, startTransition] = useTransition();
   const [profilePic, setProfilePic] = useState<string>(user?.image || "");
   const [showModal, setShowModal] = useState(false);
-
-  console.log(profilePic);
 
   const [photoPending, startPhotoTransition] = useTransition();
 
@@ -154,8 +150,6 @@ export const OnboardingProfileForm = () => {
   useEffect(() => {
     if (user?.image) setProfilePic(user?.image);
   }, [user]);
-
-  console.log(profilePic);
 
   return (
     <Form {...form}>
