@@ -447,7 +447,7 @@ const CheckoutPage = () => {
         const { data } = await api.post("/orders", payload);
         clearCart();
         toast.success("Order placed successfully");
-        router.push(`/orders/success/${data.order.id}`);
+        router.push(`/orders/success/${data.order.orderNumber}`);
       } catch (err: any) {
         toast.error(err?.response?.data?.message ?? "Checkout failed");
       }

@@ -81,7 +81,12 @@ export const OnboardingPersona = () => {
         });
 
         toast.success(res?.data?.message);
-        router.push("/onboarding/interests");
+        // Branching logic
+        if (selectedPersona === "professional") {
+          router.push("/onboarding/architect-details");
+        } else {
+          router.push("/onboarding/interests");
+        }
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "Internal server error");
       }
@@ -98,14 +103,14 @@ export const OnboardingPersona = () => {
             className={cn(
               "py-14 h-full cursor-pointer hover:bg-primary transition-all group",
               selectedPersona === persona.value &&
-                "bg-primary text-white hover:bg-primary/90"
+                "bg-primary text-white hover:bg-primary/90",
             )}
           >
             <CardContent className="flex text-center items-center flex-col justify-center gap-2">
               <persona.icon
                 className={cn(
                   "group-hover:text-white transition-all size-8 text-primary",
-                  selectedPersona === persona.value && "text-white"
+                  selectedPersona === persona.value && "text-white",
                 )}
               />
               <CardTitle className="group-hover:text-white">

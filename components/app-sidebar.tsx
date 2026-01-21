@@ -1,17 +1,91 @@
+// "use client";
+
+// import * as React from "react";
+// import {
+//   IconChartBar,
+//   IconDashboard,
+//   IconPackage,
+//   IconUsers,
+//   IconSettings,
+//   IconHelp,
+//   IconSearch,
+//   IconBuildingStore,
+//   IconSparkles,
+// } from "@tabler/icons-react";
+// import { NavMain } from "@/components/nav-main";
+// import { NavSecondary } from "@/components/nav-secondary";
+// import { NavUser } from "@/components/nav-user";
+// import {
+//   Sidebar,
+//   SidebarContent,
+//   SidebarFooter,
+//   SidebarHeader,
+//   SidebarMenu,
+//   SidebarMenuButton,
+//   SidebarMenuItem,
+// } from "@/components/ui/sidebar";
+// import { Logo, SmallLogo } from "./Logo";
+// import { architectNavLinks, brandNavLinks, userNavLinks } from "@/constants";
+// import { useAuth } from "@/store/useAuth";
+
+// const sidebarData = {
+//   navSecondary: [
+//     { title: "Settings", url: "/settings", icon: IconSettings },
+//     { title: "Get Help", url: "/help", icon: IconHelp },
+//   ],
+// };
+
+// export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+//   const { user } = useAuth();
+//   return (
+//     <Sidebar collapsible="offcanvas" {...props}>
+//       <SidebarHeader>
+//         <SidebarMenu>
+//           <SidebarMenuItem>
+//             <SidebarMenuButton
+//               size="lg"
+//               asChild
+//               className="hover:bg-transparent"
+//             >
+//               <a href="#">
+//                 <SmallLogo />
+//                 <div className="grid flex-1 text-left text-sm leading-tight ml-2">
+//                   <span className="truncate font-semibold uppercase tracking-widest">
+//                     NuvyLux
+//                   </span>
+//                   <span className="truncate text-xs text-muted-foreground">
+//                     Brand Partner
+//                   </span>
+//                 </div>
+//               </a>
+//             </SidebarMenuButton>
+//           </SidebarMenuItem>
+//         </SidebarMenu>
+//       </SidebarHeader>
+//       <SidebarContent>
+//         <NavMain
+//           items={
+//             user && user?.role === "brand"
+//               ? brandNavLinks
+//               : user?.role === "professional"
+//                 ? architectNavLinks
+//                 : userNavLinks
+//           }
+//         />
+//         <NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
+//       </SidebarContent>
+//       <SidebarFooter>
+//         <NavUser />
+//       </SidebarFooter>
+//     </Sidebar>
+//   );
+// }
+
 "use client";
 
 import * as React from "react";
-import {
-  IconChartBar,
-  IconDashboard,
-  IconPackage,
-  IconUsers,
-  IconSettings,
-  IconHelp,
-  IconSearch,
-  IconBuildingStore,
-  IconSparkles,
-} from "@tabler/icons-react";
+import { IconSettings, IconHelp } from "@tabler/icons-react";
+
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
@@ -24,19 +98,24 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Logo, SmallLogo } from "./Logo";
-import { brandNavLinks, userNavLinks } from "@/constants";
+import { SmallLogo } from "./Logo";
 import { useAuth } from "@/store/useAuth";
+import { getNavByRole } from "@/lib/getNavByRole";
 
 const sidebarData = {
   navSecondary: [
-    { title: "Settings", url: "/dashboard/settings", icon: IconSettings },
-    { title: "Get Help", url: "/dashboard/help", icon: IconHelp },
+    { title: "Settings", url: "/settings", icon: IconSettings },
+    { title: "Get Help", url: "/help", icon: IconHelp },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
+
+  const navItems = React.useMemo(() => getNavByRole(user?.role), [user?.role]);
+
+  // if (isLoading) return null; // or skeleton
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -47,14 +126,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="hover:bg-transparent"
             >
-              <a href="#">
+              <a href="/">
                 <SmallLogo />
-                <div className="grid flex-1 text-left text-sm leading-tight ml-2">
+                <div className="ml-2 grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold uppercase tracking-widest">
                     NuvyLux
                   </span>
                   <span className="truncate text-xs text-muted-foreground">
-                    Brand Partner
+                    {user?.role === "brand"
+                      ? "Brand Partner"
+                      : user?.role === "professional"
+                        ? "Professional"
+                        : "User"}
                   </span>
                 </div>
               </a>
@@ -62,12 +145,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
-        <NavMain
-          items={user && user?.role === "brand" ? brandNavLinks : userNavLinks}
-        />
+        <NavMain items={navItems} />
         <NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
       </SidebarContent>
+
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>

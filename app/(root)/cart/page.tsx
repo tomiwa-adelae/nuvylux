@@ -79,9 +79,9 @@ const CartPage = () => {
         Your Shopping Cart
       </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-2">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3 space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-2">
             {items.map((item) => (
               <Card className="p-0" key={item.id}>
                 <CardContent className="flex gap-2.5 p-1.5 items-center">
@@ -100,7 +100,7 @@ const CartPage = () => {
                       <div>
                         <Link
                           href={`/${item.slug}`}
-                          className="font-semibold hover:underline line-clamp-2 hover:text-primary text-base md:text-lg"
+                          className="font-medium hover:underline line-clamp-2 hover:text-primary text-base"
                         >
                           {item.name}
                         </Link>

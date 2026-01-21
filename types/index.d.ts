@@ -24,6 +24,8 @@ export type Product = {
   createdAt: string;
   updatedAt: string;
   isSaved: boolean;
+
+  brand?: Brand;
 };
 
 export type OrderItem = {
@@ -34,6 +36,8 @@ export type OrderItem = {
   productName: string;
   productSlug: string;
   productImage: string;
+
+  status: OrderItemStatus;
 
   price: string; // stored as string (Prisma Decimal)
   quantity: number;
@@ -65,6 +69,13 @@ export type OrderStatus =
   | "DELIVERED"
   | "CANCELLED";
 
+export type OrderItemStatus =
+  | "PENDING"
+  | "PROCESSING"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED";
+
 export type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "REFUNDED";
 
 export type Order = {
@@ -81,6 +92,7 @@ export type Order = {
   deliveryFee: string;
   discount: string;
   total: string;
+  brandEarnings?: string;
 
   customerNote: string;
 
@@ -91,6 +103,90 @@ export type Order = {
   shippedAt: string | null;
   deliveredAt: string | null;
   cancelledAt: string | null;
+
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type BrandType = "hair" | "skin" | "fashion" | "beauty" | "lifestyle";
+
+export type BrandColor = {
+  name: string;
+  colorCode: string; // e.g. "#000000"
+} | null;
+
+export type BrandSocial = {
+  id: string;
+  brandId: string;
+  url: string;
+};
+
+export type Brand = {
+  id: string;
+  brandName: string;
+  brandLogo: string;
+  brandType: BrandType;
+
+  description: string;
+  website: string | null;
+
+  brandColor: BrandColor;
+
+  isDeleted: boolean;
+
+  userId: string;
+
+  socials: BrandSocial[]; // 👈 NEW
+
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ServiceStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
+
+export type ServiceType =
+  | "CONSULTATION"
+  | "COACHING"
+  | "BOOKING"
+  | "DIGITAL"
+  | "OTHER";
+
+export type PricingType = "HOURLY" | "FIXED" | "PER_SESSION";
+
+export type DeliveryMode = "ONLINE" | "IN_PERSON" | "HYBRID";
+
+export type Service = {
+  id: string;
+  userId: string;
+
+  name: string;
+  slug: string;
+
+  description: string; // stored JSON string (TipTap, etc.)
+  shortDescription: string;
+
+  price: string; // Prisma Decimal
+  currency: string; // e.g. "GBP", "USD", "NGN"
+
+  pricingType: PricingType;
+  duration?: number | null; // minutes or hours (your choice)
+  revisions?: number | null;
+
+  type: ServiceType;
+  deliveryMode: DeliveryMode;
+
+  deliveryTimeline?: string | null;
+  location?: string | null;
+
+  bookingRules?: string | null;
+  cancellationPolicy?: string | null;
+
+  thumbnail: string;
+  images: string[];
+
+  status: ServiceStatus;
+  isFeatured: boolean;
+  isDeleted: boolean;
 
   createdAt: string;
   updatedAt: string;

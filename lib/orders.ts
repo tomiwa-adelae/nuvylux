@@ -10,4 +10,9 @@ export const orderService = {
     const res = await api.get(`/orders/${orderNumber}`);
     return res.data;
   },
+
+  getBrandOrders: async () => {
+    const res = await api.get(`/orders/brand/all`);
+    return res.data;
+  },
 };

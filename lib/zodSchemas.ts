@@ -171,7 +171,7 @@ export const BrandOnboardingFormSchema = z.object({
     .array(
       z.object({
         url: z.string().url({ message: "Please enter a valid URL" }),
-      })
+      }),
     )
     .optional(), // makes the whole field optional
 });
@@ -219,6 +219,107 @@ export const CheckoutFormSchema = z.object({
   customerNote: z.string().optional(),
 });
 
+export const BasicInformationFormSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First name must be at least 2 characters.",
+  }),
+  lastName: z.string().min(2, {
+    message: "Last name must be at least 2 characters.",
+  }),
+  email: z.string().email().min(2, {
+    message: "Email must be at least 2 characters.",
+  }),
+  address: z
+    .string()
+    .min(2, { message: "Address must be at least 2 characters" }),
+  city: z.string().min(2, { message: "City must be at least 2 characters" }),
+  state: z.string().min(2, { message: "State must be selected" }),
+  country: z.string().min(2, { message: "Country must be selected" }),
+  image: z.string().optional(),
+  dob: z.any().optional(),
+  gender: z.string().optional(),
+  phoneNumber: z
+    .string()
+    .min(7, "Phone number required")
+    .optional()
+    .or(z.literal("")), // allow blank but treat as invalid
+});
+
+export const ChangePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters." })
+      .refine((val) => /[a-z]/.test(val), {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .refine((val) => /[A-Z]/.test(val), {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .refine((val) => /[0-9]/.test(val), {
+        message: "Password must contain at least one number.",
+      })
+      .refine((val) => /[!@#$%^&*(),.?":{}|<>]/.test(val), {
+        message: "Password must contain at least one special character.",
+      }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export const ArchitectSchema = z.object({
+  profession: z.string().min(2, "Please select your primary profession"),
+  yearsOfExperience: z.string().min(1, "Required"),
+  bio: z.string().max(300, "Bio must be under 300 characters"),
+  website: z.string().url().optional().or(z.string().length(0)),
+  instagram: z.string().optional(),
+});
+
+export const ServiceSchema = z.object({
+  name: z
+    .string()
+    .min(5, "Service name must be at least 5 characters")
+    .max(100, "Service name too long"),
+
+  shortDescription: z
+    .string()
+    .min(10, "Add a catchy one-liner")
+    .max(120, "Keep it under 120 characters"),
+
+  description: z.string().min(10, "Description is required"),
+
+  price: z.string().min(1, "Price is required"),
+
+  pricingType: z.enum(["FIXED", "HOURLY"]).default("FIXED"),
+
+  currency: z.enum(["NGN", "USD", "EUR", "GBP"]).default("NGN"),
+
+  type: z.enum(["CONSULTATION", "DELIVERABLE", "PROJECT"]),
+
+  deliveryMode: z.enum(["ONLINE", "IN_PERSON", "HYBRID"]),
+
+  duration: z.coerce.number().min(15).optional(), // minutes
+
+  deliveryTimeline: z.string().optional(), // "3-5 business days"
+
+  location: z.string().optional(), // for IN_PERSON
+
+  revisions: z.string().optional(),
+
+  cancellationPolicy: z.string().max(500).optional(),
+
+  status: z.enum(["DRAFT", "ACTIVE", "PAUSED"]).default("DRAFT"),
+
+  thumbnail: z.string().min(1, "Please upload a cover image"),
+
+  images: z.array(z.string()).max(6, "Maximum 6 gallery images"),
+});
+
+export type ServiceSchemaType = z.infer<typeof ServiceSchema>;
+export type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
 export type CheckoutFormSchemaType = z.infer<typeof CheckoutFormSchema>;
 export type AddProductFormSchemaType = z.infer<typeof AddProductFormSchema>;
 export type LoginFormSchemaType = z.infer<typeof LoginFormSchema>;
@@ -238,3 +339,7 @@ export type OnboardingProfileFormSchemaType = z.infer<
 export type BrandOnboardingFormSchemaType = z.infer<
   typeof BrandOnboardingFormSchema
 >;
+export type BasicInformationFormSchemaType = z.infer<
+  typeof BasicInformationFormSchema
+>;
+export type ArchitectSchemaType = z.infer<typeof ArchitectSchema>;

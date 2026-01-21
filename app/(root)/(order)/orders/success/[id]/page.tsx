@@ -80,7 +80,7 @@ const page = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-2 pt-4">
             <Button asChild className="flex-1" variant="outline">
-              <Link href="/account/orders">View My Orders</Link>
+              <Link href="/orders">View My Orders</Link>
             </Button>
             <Button asChild className="flex-1">
               <Link href="/explore">

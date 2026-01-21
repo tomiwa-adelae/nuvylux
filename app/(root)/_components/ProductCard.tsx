@@ -24,11 +24,13 @@ import api from "@/lib/api";
 import { useAuth } from "@/store/useAuth";
 // 1. Import the cart store
 import { createCartItemId, useCart } from "@/store/useCart";
+import { AddToCartModal } from "./AddToCartModal";
 
 export function ProductCard({ product }: { product: Product }) {
   const { user } = useAuth();
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 2. Access the addItem action
   const addItem = useCart((state) => state.addItem);
@@ -62,46 +64,42 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   // 3. Functional Add to Cart
-  const handleAddToCart = async (e: React.MouseEvent) => {
+  const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    e.stopPropagation(); // Prevent navigation if the card is wrapped in a Link
+    e.stopPropagation();
 
-    const compositeId = createCartItemId(product.id);
+    // Check if product has options. If not, add directly.
+    const hasOptions =
+      (product.sizes?.length ?? 0) > 0 ||
+      (product.availableColors?.length ?? 0) > 0;
 
-    addItem({
-      id: compositeId, // Use composite ID
-      productId: product.id, // Store the actual product ID
-      name: product.name,
-      slug: product.slug,
-      price: Number(product.price),
-      image: product.thumbnail,
-      quantity: 1,
-      // No size or color for quick add from product card
-    });
-
-    if (user) {
-      try {
-        await api.post("/cart", {
-          productId: product.id,
-          quantity: 1,
-          // size: selectedSize,
-          // color: selectedColor,
-        });
-      } catch (e) {
-        console.error("DB Sync failed");
-      }
+    if (hasOptions) {
+      setIsModalOpen(true);
+    } else {
+      // Logic for products with NO sizes/colors (Direct Add)
+      const compositeId = createCartItemId(product.id);
+      addItem({
+        id: compositeId,
+        productId: product.id,
+        name: product.name,
+        slug: product.slug,
+        price: Number(product.price),
+        image: product.thumbnail,
+        quantity: 1,
+      });
+      toast.success("Added to cart");
     }
-
-    toast.success(`${product.name} added to cart!`, {
-      action: {
-        label: "View Cart",
-        onClick: () => (window.location.href = "/cart"),
-      },
-    });
   };
 
   return (
     <Card className="group transition-all p-0 border-none shadow-none hover:shadow-md rounded-2xl overflow-hidden">
+      {isModalOpen && (
+        <AddToCartModal
+          product={product}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       <CardContent className="p-1.5 relative">
         <Link
           href={`/${product.slug}`}
@@ -120,7 +118,7 @@ export function ProductCard({ product }: { product: Product }) {
               {Math.round(
                 ((Number(product?.compareAtPrice) - Number(product.price)) /
                   Number(product.compareAtPrice)) *
-                  100
+                  100,
               )}
               %
             </Badge>
@@ -130,7 +128,7 @@ export function ProductCard({ product }: { product: Product }) {
           <div className="absolute inset-x-0 bottom-0 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/60 to-transparent hidden md:block">
             <Button
               onClick={handleAddToCart}
-              className="w-full gap-2 bg-white text-black hover:bg-gray-100 border-none rounded-lg"
+              className="w-full gap-2 bg-white dark:bg-black dark:text-white text-black hover:bg-gray-100 border-none rounded-lg"
             >
               <IconShoppingCartPlus size={18} />
               Quick Add
@@ -168,7 +166,7 @@ export function ProductCard({ product }: { product: Product }) {
 
           <div className="flex items-center justify-between mt-1">
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-primary">
+              <span className="text-base font-bold">
                 <NairaIcon /> {formatMoneyInput(product.price)}
               </span>
               {product.compareAtPrice && (

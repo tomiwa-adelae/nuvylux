@@ -58,7 +58,7 @@ export const Header = () => {
             variant="ghost"
             size="icon"
             asChild
-            className="relative text-white hover:bg-white/10"
+            className="relative text-white"
           >
             <Link href="/cart">
               <IconShoppingCart size={24} />

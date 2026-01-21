@@ -42,6 +42,7 @@ import {
   IconMail,
   IconBox,
   IconFolder,
+  IconHeart,
 } from "@tabler/icons-react";
 import { Award } from "lucide-react";
 
@@ -190,23 +191,66 @@ export const brandNavLinks: NavLinkProps[] = [
   },
   {
     label: "Products",
-    slug: "/products",
+    slug: "/dashboard/products",
     icon: IconBox,
-    // allowedRoles: ["head_admin", "admin"],
+  },
+  {
+    label: "Orders",
+    slug: "/dashboard/orders",
+    icon: IconBox,
+  },
+  {
+    label: "Earnings",
+    slug: "/dashboard/earnings",
+    icon: IconWallet,
+    comingSoon: true,
+  },
+  {
+    label: "Customers",
+    slug: "/dashboard/customers",
+    icon: IconUsers,
+    comingSoon: true,
+  },
+  {
+    label: "Analytics",
+    slug: "/dashboard/analytics",
+    icon: IconChartInfographic,
+    comingSoon: true,
   },
 ];
 
 export const userNavLinks: NavLinkProps[] = [
   {
     label: "Dashboard",
-    slug: "/dashboard",
+    slug: "/account",
     icon: IconHome,
-    // allowedRoles: ["head_admin", "admin"],
   },
   {
     label: "Orders",
     slug: "/orders",
     icon: IconFolder,
-    // allowedRoles: ["head_admin", "admin"],
+  },
+  {
+    label: "Saved",
+    slug: "/saved",
+    icon: IconHeart,
+  },
+  {
+    label: "Cart",
+    slug: "/cart",
+    icon: IconShoppingCart,
+  },
+];
+
+export const architectNavLinks: NavLinkProps[] = [
+  {
+    label: "Dashboard",
+    slug: "/dashboard",
+    icon: IconHome,
+  },
+  {
+    label: "Services",
+    slug: "/dashboard/services",
+    icon: IconFolder,
   },
 ];
