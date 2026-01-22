@@ -3,12 +3,14 @@ import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { Button } from "./ui/button";
 import { IconArrowLeft } from "@tabler/icons-react";
+import { Badge } from "./ui/badge";
 
 interface PageHeaderProps {
   title: string;
   description?: string | any;
   action?: ReactNode;
   back?: boolean;
+  badges?: string[];
 }
 
 export function PageHeader({
@@ -16,6 +18,7 @@ export function PageHeader({
   description,
   action,
   back,
+  badges,
 }: PageHeaderProps) {
   const router = useRouter();
 
@@ -38,6 +41,14 @@ export function PageHeader({
               <p className="mt-2 text-sm md:text-base text-muted-foreground">
                 {description}
               </p>
+            )}
+
+            {badges && (
+              <div className="flex gap-2 mt-2.5">
+                {badges.map((badge) => (
+                  <Badge variant={"secondary"}>{badge}</Badge>
+                ))}
+              </div>
             )}
           </div>
         </div>

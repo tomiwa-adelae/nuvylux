@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { NairaIcon } from "@/components/NairaIcon";
+
 import { formatMoneyInput, formatPhoneNumber } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,7 @@ import {
 } from "@tabler/icons-react";
 import { Separator } from "@/components/ui/separator";
 import { Order } from "@/types";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 interface OrderCardProps {
   order: Order;
@@ -104,8 +105,8 @@ export const OrderCard = ({ order, isBrandView = false }: OrderCardProps) => {
                 </h4>
                 <div className="flex items-center gap-2 mt-0.5">
                   <p className="text-xs text-muted-foreground">
-                    <NairaIcon /> {formatMoneyInput(Number(item.price))} ×{" "}
-                    {item.quantity}
+                    <CurrencyIcon currency="NGN" />{" "}
+                    {formatMoneyInput(Number(item.price))} × {item.quantity}
                   </p>
                   {(item.size || item.color) && (
                     <div className="flex gap-1">
@@ -131,9 +132,9 @@ export const OrderCard = ({ order, isBrandView = false }: OrderCardProps) => {
               {isBrandView ? "Earnings" : "Total Amount"}
             </p>
             <p className="text-lg font-black text-primary">
-              <NairaIcon />{" "}
+              <CurrencyIcon currency="NGN" />{" "}
               {formatMoneyInput(
-                Number(isBrandView ? order.brandEarnings : order.total)
+                Number(isBrandView ? order.brandEarnings : order.total),
               )}
             </p>
           </div>

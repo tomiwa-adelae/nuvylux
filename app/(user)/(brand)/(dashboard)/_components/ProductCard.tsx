@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { IconSparkles } from "@tabler/icons-react";
 import { Product } from "@/types";
-import { NairaIcon } from "@/components/NairaIcon";
+
 import { formatMoneyInput } from "@/lib/utils";
 import {
   Card,
@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
@@ -40,7 +41,7 @@ export function ProductCard({ product }: { product: Product }) {
           </Link>
           <div className="flex items-center justify-between pt-1">
             <span className="text-sm font-bold">
-              <NairaIcon />
+              <CurrencyIcon currency="NGN" />
               {formatMoneyInput(product.price)}
             </span>
             <span className="text-[10px] text-neutral-400 font-medium">

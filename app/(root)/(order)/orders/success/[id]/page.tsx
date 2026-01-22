@@ -12,7 +12,6 @@ import {
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { NairaIcon } from "@/components/NairaIcon";
 import { formatMoneyInput } from "@/lib/utils";
 import api from "@/lib/api";
 import { Loader2 } from "lucide-react";

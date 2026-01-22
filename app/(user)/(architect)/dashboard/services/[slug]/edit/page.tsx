@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState, useTransition } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -51,13 +51,34 @@ import { MultiImageUploader } from "@/app/(user)/(client)/_components/MultiImage
 
 import { PageHeader } from "@/components/PageHeader";
 import { RichTextEditor } from "@/components/text-editor/Editor";
+import { Service, ServiceType } from "@/types";
+import { serviceService } from "@/lib/services";
 import { CurrencyIcon } from "@/components/CurrencyIcon";
 
-const CreateServicePage = () => {
+const page = () => {
+  const { slug } = useParams();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [service, setService] = useState<Service | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [pending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!slug) return;
+    const fetchService = async () => {
+      try {
+        const data = await serviceService.getMyServicesDetails(slug as string);
+        setService(data);
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || "Failed to load service");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchService();
+  }, [slug]);
 
   const form = useForm<ServiceSchemaType>({
     resolver: zodResolver(ServiceSchema),
@@ -78,9 +99,30 @@ const CreateServicePage = () => {
       status: "DRAFT",
       images: [],
       thumbnail: "",
-      bookingRules: "",
     },
   });
+
+  useEffect(() => {
+    if (service) {
+      form.reset({
+        name: service.name,
+        shortDescription: service.shortDescription,
+        description: service.description,
+        price: service.price?.toString() || "",
+        images: service.images,
+        thumbnail: service.thumbnail || "",
+        status: service.status as any,
+        type: service.type as any,
+        deliveryMode: service.deliveryMode,
+        location: service.location || "",
+        currency: (service.currency as any) || "NGN",
+        pricingType: service.pricingType as any,
+        duration: service.duration?.toString() as any,
+        revisions: service.revisions?.toString(),
+        cancellationPolicy: service.cancellationPolicy || "",
+      });
+    }
+  }, [service, form]);
 
   // Watch for Preview
   const watchedName = form.watch("name");
@@ -97,6 +139,10 @@ const CreateServicePage = () => {
       form.setValue("thumbnail", reader.result as string);
     };
     reader.readAsDataURL(file);
+  };
+
+  const isBase64 = (str: string) => {
+    return str.startsWith("data:image");
   };
 
   const onSubmit = async (data: ServiceSchemaType) => {
@@ -129,39 +175,58 @@ const CreateServicePage = () => {
           formData.append("cancellationPolicy", data.cancellationPolicy);
         }
 
-        if (data.bookingRules) {
-          formData.append("bookingRules", data.bookingRules);
-        }
-
-        // 3. Convert and Append the Thumbnail
-        if (data.thumbnail) {
-          const thumbFile = base64ToFile(data.thumbnail, "service-thumb.png");
+        // 2. Handle Thumbnail (Check if it's a new Base64 or old URL)
+        if (data.thumbnail.startsWith("data:image")) {
+          const thumbFile = base64ToFile(data.thumbnail, "product-thumb.png");
           formData.append("thumbnail", thumbFile);
+        } else {
+          // If it's a URL, your backend needs to know to keep the existing one
+          formData.append("existingThumbnail", data.thumbnail);
         }
 
-        // This key MUST match { name: 'images' } in the Controller
-        data.images.forEach((base64, index) => {
-          const file = base64ToFile(base64, `gallery-${index}.png`);
+        // 3. Handle Gallery Images
+        const newImages: string[] = [];
+        const existingImages: string[] = [];
+
+        data.images.forEach((img) => {
+          if (img.startsWith("data:image")) {
+            newImages.push(img);
+          } else {
+            existingImages.push(img);
+          }
+        });
+
+        // Append existing URLs so the backend knows which ones were kept
+        formData.append("existingImages", JSON.stringify(existingImages));
+
+        // Append new files
+        newImages.forEach((base64, index) => {
+          const file = base64ToFile(base64, `gallery-new-${index}.png`);
           formData.append("images", file);
         });
 
         // 5. Send to API (Do NOT set Content-Type header manually, the browser will do it)
-        const res = await api.post("/services", formData, {
+        const res = await api.patch(`/services/${service?.id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        form.reset();
-
-        toast.success(res.data.message || "Services added successfully!");
-        router.push(`/dashboard/services`);
+        toast.success(res.data.message || "Services updated successfully!");
+        router.push(`/dashboard/services/${res.data.service.slug}`);
       } catch (error: any) {
         console.error(error);
-        toast.error(error.response?.data?.message || "Failed to add services");
+        toast.error(
+          error.response?.data?.message || "Failed to update services",
+        );
       }
     });
   };
+
+  if (loading)
+    return <div className="p-10 text-center">Loading Service...</div>;
+  if (!service)
+    return <div className="p-10 text-center">Service not found.</div>;
 
   return (
     <div>
@@ -181,7 +246,9 @@ const CreateServicePage = () => {
               <CardContent className="p-2">
                 <div className="rounded-lg overflow-hidden bg-gray-100">
                   <Image
-                    src={watchedThumbnail || DEFAULT_IMAGE}
+                    src={
+                      watchedThumbnail || service?.thumbnail || DEFAULT_IMAGE
+                    }
                     alt="Preview"
                     width={1000}
                     height={1000}
@@ -243,7 +310,7 @@ const CreateServicePage = () => {
                     <FormItem>
                       <FormLabel>Thumbnail</FormLabel>
                       <FormControl>
-                        {!field.value ? (
+                        {!field.value || !service?.thumbnail ? (
                           <div
                             className={`border-2 border-dashed rounded-2xl p-16 text-center cursor-pointer transition-all ${
                               isDragging
@@ -547,9 +614,9 @@ const CreateServicePage = () => {
                           </FormControl>
                           <SelectContent>
                             <SelectItem value="NGN">NGN</SelectItem>
-                            {/* <SelectItem value="USD">USD</SelectItem> */}
-                            {/* <SelectItem value="EUR">EUR</SelectItem> */}
-                            {/* <SelectItem value="GBP">GBP</SelectItem> */}
+                            <SelectItem value="USD">USD</SelectItem>
+                            <SelectItem value="EUR">EUR</SelectItem>
+                            <SelectItem value="GBP">GBP</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormItem>
@@ -688,24 +755,6 @@ const CreateServicePage = () => {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="bookingRules"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Booking rules
-                        <span className="text-muted-foreground">
-                          (Optional)
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <RichTextEditor field={field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </CardContent>
             </Card>
 
@@ -731,8 +780,8 @@ const CreateServicePage = () => {
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="DRAFT">Draft</SelectItem>
-                          <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                          <SelectItem value="PAUSED">PAUSED</SelectItem>
+                          <SelectItem value="ACTIVE">Active</SelectItem>
+                          <SelectItem value="PAUSED">Paused</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormItem>
@@ -769,4 +818,4 @@ const CreateServicePage = () => {
   );
 };
 
-export default CreateServicePage;
+export default page;

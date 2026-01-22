@@ -20,8 +20,6 @@ const BrandOrdersPage = () => {
         // We call the new brand-specific endpoint
         const res = await api.get("/orders/brand/all");
 
-        console.log(res);
-
         setOrders(res.data);
       } catch (error) {
         console.error("Failed to fetch brand orders", error);
@@ -34,18 +32,18 @@ const BrandOrdersPage = () => {
 
   const newOrders = orders.filter((o) =>
     o.items.some(
-      (item: any) => item.status === "PENDING" || item.status === "PROCESSING"
-    )
+      (item: any) => item.status === "PENDING" || item.status === "PROCESSING",
+    ),
   );
 
   // 2. In Transit: The brand has items specifically marked as SHIPPED
   const shippingOrders = orders.filter((o) =>
-    o.items.some((item: any) => item.status === "SHIPPED")
+    o.items.some((item: any) => item.status === "SHIPPED"),
   );
 
   // 3. Completed: All of the brand's items in this order are DELIVERED
   const completedOrders = orders.filter((o) =>
-    o.items.every((item: any) => item.status === "DELIVERED")
+    o.items.every((item: any) => item.status === "DELIVERED"),
   );
 
   if (loading) {

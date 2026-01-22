@@ -11,8 +11,6 @@ import { PageHeader } from "../../_components/PageHeader";
 const page = () => {
   const { user } = useAuth();
 
-  console.log(user);
-
   const getRoleDestination = () => {
     switch (user?.role) {
       case "professional":

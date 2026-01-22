@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NairaIcon } from "@/components/NairaIcon";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { categories, DEFAULT_IMAGE } from "@/constants";
@@ -39,6 +39,7 @@ import { base64ToFile } from "@/lib/utils";
 import { Loader } from "@/components/Loader";
 import { useRouter } from "next/navigation";
 import { SizesSelector } from "./SizesSelector";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 export const AddProductForm = ({ brandId }: { brandId: string }) => {
   const router = useRouter();
@@ -74,7 +75,7 @@ export const AddProductForm = ({ brandId }: { brandId: string }) => {
   const handleFile = (file: File) => {
     if (
       !["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(
-        file.type
+        file.type,
       )
     ) {
       toast.error("Only PNG, JPG, JPEG, or WEBP files are supported.");
@@ -108,7 +109,7 @@ export const AddProductForm = ({ brandId }: { brandId: string }) => {
         formData.append("sizes", JSON.stringify(data.sizes || []));
         formData.append(
           "availableColors",
-          JSON.stringify(data.availableColors || [])
+          JSON.stringify(data.availableColors || []),
         );
 
         // 3. Convert and Append the Thumbnail
@@ -171,7 +172,7 @@ export const AddProductForm = ({ brandId }: { brandId: string }) => {
                     "A short description of your product will appear here."}
                 </p>
                 <div className="flex items-center gap-1 font-bold mt-1.5 text-lg text-primary">
-                  <NairaIcon />
+                  <CurrencyIcon currency="NGN" />
                   {watchedPrice
                     ? Number(watchedPrice).toLocaleString()
                     : "0.00"}

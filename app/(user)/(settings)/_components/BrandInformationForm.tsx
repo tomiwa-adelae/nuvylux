@@ -59,7 +59,6 @@ const PRESET_COLORS = [
 ];
 
 export const BrandInformationForm = ({ brand }: { brand: Brand }) => {
-  console.log(brand);
   const router = useRouter();
 
   const [pending, startTransition] = useTransition();
@@ -242,7 +241,7 @@ export const BrandInformationForm = ({ brand }: { brand: Brand }) => {
                           className={cn(
                             "size-8 rounded-lg border border-black/10 cursor-pointer transition-transform active:scale-95",
                             field.value === color &&
-                              "ring-2 ring-offset-2 ring-primary"
+                              "ring-2 ring-offset-2 ring-primary",
                           )}
                           style={{ backgroundColor: color }}
                           onClick={() => field.onChange(color)}

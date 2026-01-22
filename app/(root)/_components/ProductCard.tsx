@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { NairaIcon } from "@/components/NairaIcon";
 import { formatMoneyInput } from "@/lib/utils";
 import { Product } from "@/types";
 import { toast } from "sonner";
@@ -25,6 +24,7 @@ import { useAuth } from "@/store/useAuth";
 // 1. Import the cart store
 import { createCartItemId, useCart } from "@/store/useCart";
 import { AddToCartModal } from "./AddToCartModal";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 export function ProductCard({ product }: { product: Product }) {
   const { user } = useAuth();
@@ -167,7 +167,8 @@ export function ProductCard({ product }: { product: Product }) {
           <div className="flex items-center justify-between mt-1">
             <div className="flex items-center gap-2">
               <span className="text-base font-bold">
-                <NairaIcon /> {formatMoneyInput(product.price)}
+                <CurrencyIcon currency="NGN" />{" "}
+                {formatMoneyInput(product.price)}
               </span>
               {product.compareAtPrice && (
                 <span className="text-xs text-muted-foreground line-through">

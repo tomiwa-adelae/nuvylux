@@ -1,5 +1,5 @@
 "use client";
-import { NairaIcon } from "@/components/NairaIcon";
+
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { CancelOrderModal } from "../../_components/CancelOrderModal";
 import api from "@/lib/api";
 import { Loader } from "@/components/Loader";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 const page = () => {
   const { orderNumber } = useParams();
@@ -40,7 +41,7 @@ const page = () => {
     const fetchOrder = async () => {
       try {
         const data = await orderService.getMyOrderDetails(
-          orderNumber as string
+          orderNumber as string,
         );
         setOrder(data);
       } catch (error: any) {
@@ -67,7 +68,7 @@ const page = () => {
   // 3. Changed to a 'function' declaration so it is hoisted
   async function verifyPaymentOnBackend(
     txRef: string | null,
-    transactionId: string | null
+    transactionId: string | null,
   ) {
     if (!txRef || !transactionId) return;
 
@@ -77,7 +78,7 @@ const page = () => {
 
     try {
       const res = await api.get(
-        `/orders/verify-payment?tx_ref=${txRef}&transaction_id=${transactionId}`
+        `/orders/verify-payment?tx_ref=${txRef}&transaction_id=${transactionId}`,
       );
 
       toast.success("Payment verified successfully!");
@@ -100,10 +101,10 @@ const page = () => {
 
   // Helper flags
   const shippedItemsCount = brandItems.filter((i: any) =>
-    ["SHIPPED", "DELIVERED"].includes(i.status)
+    ["SHIPPED", "DELIVERED"].includes(i.status),
   ).length;
   const deliveredItemsCount = brandItems.filter(
-    (i: any) => i.status === "DELIVERED"
+    (i: any) => i.status === "DELIVERED",
   ).length;
   const totalItems = brandItems.length;
 
@@ -176,7 +177,7 @@ const page = () => {
     if (a.isCancelled) return true;
     if (order.status === "CANCELLED") {
       return !["Order Shipped", "Delivered", "Shipping"].some((s) =>
-        a.label.includes(s)
+        a.label.includes(s),
       );
     }
     // Show if there is any progress (completed or partial) or if it's the next logical step
@@ -210,7 +211,7 @@ const page = () => {
       }
     } catch (error: any) {
       toast.error(
-        error.response?.data?.message || "Payment failed to initialize"
+        error.response?.data?.message || "Payment failed to initialize",
       );
     } finally {
       setProcessingAction(false);
@@ -288,8 +289,8 @@ const page = () => {
                   order.status === "DELIVERED"
                     ? "default"
                     : order?.status === "CANCELLED"
-                    ? "destructive"
-                    : "secondary"
+                      ? "destructive"
+                      : "secondary"
                 }
               >
                 {order.status}
@@ -344,7 +345,7 @@ const page = () => {
                       </div>
                     </div>
                     <div className="text-right font-medium text-sm">
-                      <NairaIcon />{" "}
+                      <CurrencyIcon currency="NGN" />{" "}
                       {formatMoneyInput(Number(item.price) * item.quantity)}
                     </div>
                   </div>
@@ -356,27 +357,31 @@ const page = () => {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
                   <span>
-                    <NairaIcon /> {formatMoneyInput(Number(order.subtotal))}
+                    <CurrencyIcon currency="NGN" />{" "}
+                    {formatMoneyInput(Number(order.subtotal))}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Shipping Fee</span>
                   <span>
-                    <NairaIcon /> {formatMoneyInput(Number(order.deliveryFee))}
+                    <CurrencyIcon currency="NGN" />{" "}
+                    {formatMoneyInput(Number(order.deliveryFee))}
                   </span>
                 </div>
                 {Number(order.discount) > 0 && (
                   <div className="flex justify-between text-sm text-green-600">
                     <span>Discount</span>
                     <span>
-                      -<NairaIcon /> {formatMoneyInput(Number(order.discount))}
+                      -<CurrencyIcon currency="NGN" />{" "}
+                      {formatMoneyInput(Number(order.discount))}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between font-semibold text-lg pt-2 border-t">
                   <span>Total</span>
                   <span>
-                    <NairaIcon /> {formatMoneyInput(Number(order.total))}
+                    <CurrencyIcon currency="NGN" />{" "}
+                    {formatMoneyInput(Number(order.total))}
                   </span>
                 </div>
               </div>
@@ -563,10 +568,10 @@ const page = () => {
                             isCancelledStep
                               ? "text-destructive"
                               : activity.completed
-                              ? "text-foreground"
-                              : activity.isPartial
-                              ? "text-blue-600"
-                              : "text-muted-foreground"
+                                ? "text-foreground"
+                                : activity.isPartial
+                                  ? "text-blue-600"
+                                  : "text-muted-foreground"
                           }`}
                         >
                           {activity.label}

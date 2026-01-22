@@ -1,6 +1,5 @@
 "use client";
 
-import { NairaIcon } from "@/components/NairaIcon";
 import { PageHeader } from "@/components/PageHeader";
 import { RenderDescription } from "@/components/text-editor/RenderDescription";
 import { productService } from "@/lib/products";
@@ -18,6 +17,7 @@ import Link from "next/link";
 import { ComingSoon } from "@/components/ComingSoon";
 import { ProductGallery } from "@/components/ProductGallery";
 import { DeleteProductModal } from "@/app/(user)/(brand)/(dashboard)/_components/DeleteProductModal";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 const ProductDetailsPage = () => {
   const { slug } = useParams();
@@ -129,10 +129,11 @@ const ProductDetailsPage = () => {
                 <p className="text-sm font-medium text-primary">19 sold</p>
               </div>
               <h2 className="text-primary font-semibold text-lg md:text-xl mt-2.5">
-                <NairaIcon /> {formatMoneyInput(product.price)}{" "}
+                <CurrencyIcon currency="NGN" />{" "}
+                {formatMoneyInput(product.price)}{" "}
                 {product.compareAtPrice && (
                   <span className="line-through text-muted-foreground font-medium text-base">
-                    <NairaIcon />
+                    <CurrencyIcon currency="NGN" />
                     {formatMoneyInput(product.compareAtPrice)}
                   </span>
                 )}

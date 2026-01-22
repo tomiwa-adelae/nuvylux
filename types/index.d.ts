@@ -1,3 +1,5 @@
+import { User } from "@/store/useAuth";
+
 export type Color = {
   name: string;
   colorCode: string;
@@ -142,7 +144,7 @@ export type Brand = {
   updatedAt: string;
 };
 
-export type ServiceStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
+export type ServiceStatus = "DRAFT" | "ACTIVE" | "ARCHIVED";
 
 export type ServiceType =
   | "CONSULTATION"
@@ -190,4 +192,11 @@ export type Service = {
 
   createdAt: string;
   updatedAt: string;
+
+  professionalProfile: {
+    id: string;
+    profession: string;
+    businessName: string;
+    user: User;
+  };
 };

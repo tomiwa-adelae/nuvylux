@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { NairaIcon } from "@/components/NairaIcon";
+
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -41,6 +41,7 @@ import { base64ToFile } from "@/lib/utils";
 import api from "@/lib/api";
 import { MultiImageUploader } from "@/app/(user)/(client)/_components/MultiImageUploader";
 import { SizesSelector } from "@/app/(user)/(brand)/(dashboard)/_components/SizesSelector";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 const page = () => {
   const { slug } = useParams();
@@ -139,7 +140,7 @@ const page = () => {
         formData.append("sizes", JSON.stringify(data.sizes || []));
         formData.append(
           "availableColors",
-          JSON.stringify(data.availableColors || [])
+          JSON.stringify(data.availableColors || []),
         );
 
         // 2. Handle Thumbnail (Check if it's a new Base64 or old URL)
@@ -178,11 +179,11 @@ const page = () => {
         });
 
         toast.success("Product updated successfully!");
-        router.push(`/products/${res.data.product?.slug}`);
+        router.push(`/dashboard/products/${res.data.product?.slug}`);
         router.refresh();
       } catch (error: any) {
         toast.error(
-          error.response?.data?.message || "Failed to update product"
+          error.response?.data?.message || "Failed to update product",
         );
       }
     });
@@ -192,6 +193,7 @@ const page = () => {
     return <div className="p-10 text-center">Loading Product...</div>;
   if (!product)
     return <div className="p-10 text-center">Product not found.</div>;
+
   return (
     <div>
       <PageHeader back title={`Edit ${product.name}`} />
@@ -222,7 +224,7 @@ const page = () => {
                       "A short description of your product will appear here."}
                   </p>
                   <div className="flex items-center gap-1 font-bold mt-1.5 text-lg text-primary">
-                    <NairaIcon />
+                    <CurrencyIcon currency="NGN" />
                     {watchedPrice
                       ? Number(watchedPrice).toLocaleString()
                       : "0.00"}

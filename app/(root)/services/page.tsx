@@ -5,11 +5,13 @@ import { AudienceSection } from "../_components/AudienceSection";
 import { HowItWorksSection } from "../_components/HowItWorksSection";
 import { PartneringLogo } from "../_components/PartneringLogo";
 import { FinalCtaSection } from "../_components/FinalCtaSection";
+import { ServicesGrid } from "../_components/ServicesGrid";
 
 const page = () => {
   return (
     <div>
       <ServicesHero />
+      <ServicesGrid />
       <ServicesPillars />
       <AudienceSection />
       <HowItWorksSection />

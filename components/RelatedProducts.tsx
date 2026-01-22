@@ -5,7 +5,7 @@ import api from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import { formatMoneyInput } from "@/lib/utils";
-import { NairaIcon } from "./NairaIcon";
+
 import { ProductCard } from "@/app/(root)/_components/ProductCard";
 
 export const RelatedProducts = ({
@@ -19,7 +19,7 @@ export const RelatedProducts = ({
     const fetchRelated = async () => {
       try {
         const res = await api.get(
-          `/products/public/related/${currentProduct.id}?category=${currentProduct.category}`
+          `/products/public/related/${currentProduct.id}?category=${currentProduct.category}`,
         );
         setProducts(res.data);
       } catch (error) {

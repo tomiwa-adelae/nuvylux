@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { NairaIcon } from "@/components/NairaIcon";
 import { formatMoneyInput } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useCart } from "@/store/useCart";
@@ -28,6 +27,7 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/store/useAuth";
 import api from "@/lib/api";
 import { DeleteProductFromCart } from "../_components/DeleteProductFromCart";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 const CartPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -40,7 +40,7 @@ const CartPage = () => {
 
   const subtotal = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
-    0
+    0,
   );
   const discount = subtotal * 0.2;
   const total = subtotal - discount + 15;
@@ -140,7 +140,8 @@ const CartPage = () => {
                     </div>
                     <div className="flex justify-between items-end mt-2">
                       <p className="font-bold text-lg md:text-xl">
-                        <NairaIcon /> {formatMoneyInput(item.price)}
+                        <CurrencyIcon currency="NGN" />{" "}
+                        {formatMoneyInput(item.price)}
                       </p>
                       <InputGroup className="h-9 w-fit">
                         <InputGroupAddon>
@@ -205,26 +206,27 @@ const CartPage = () => {
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span className="text-black dark:text-white font-semibold">
-                    <NairaIcon /> {formatMoneyInput(subtotal)}
+                    <CurrencyIcon currency="NGN" /> {formatMoneyInput(subtotal)}
                   </span>
                 </div>
                 {/* <div className="flex justify-between ">
                   <span>Discount (-20%)</span>
                   <span className="text-red-500 font-semibold">
-                    - <NairaIcon /> {formatMoneyInput(discount)}
+                    -<CurrencyIcon currency="NGN" /> {formatMoneyInput(discount)}
                   </span>
                 </div> */}
                 <div className="flex justify-between">
                   <span>Delivery Fee</span>
                   <span className="text-black dark:text-white font-semibold">
-                    <NairaIcon /> {formatMoneyInput(deliveryFee)}
+                    <CurrencyIcon currency="NGN" />{" "}
+                    {formatMoneyInput(deliveryFee)}
                   </span>
                 </div>
                 <Separator className="my-4" />
                 <div className="flex justify-between text-xl font-bold">
                   <span>Total</span>
                   <span className="text-black dark:text-white">
-                    <NairaIcon /> {formatMoneyInput(total)}
+                    <CurrencyIcon currency="NGN" /> {formatMoneyInput(total)}
                   </span>
                 </div>
               </div>

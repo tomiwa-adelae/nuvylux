@@ -23,11 +23,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { NairaIcon } from "@/components/NairaIcon";
+
 import { formatMoneyInput } from "@/lib/utils";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 export const ServiceList = ({ services, onUpdate }) => {
-  console.log(services);
   return (
     // Grid layout to match product browsing
     <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-2">
@@ -99,7 +99,7 @@ export const ServiceList = ({ services, onUpdate }) => {
 
               <div className="flex items-center justify-between pt-1">
                 <div className="flex items-center gap-0.5 text-sm font-bold">
-                  <NairaIcon />
+                  <CurrencyIcon currency="NGN" />
                   <span>{formatMoneyInput(service.price)}</span>
                   {service.pricingType === "HOURLY" && (
                     <span className="text-[10px] text-muted-foreground font-normal ml-0.5">

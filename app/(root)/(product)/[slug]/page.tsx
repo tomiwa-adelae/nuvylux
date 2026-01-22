@@ -1,6 +1,5 @@
 "use client";
 
-import { NairaIcon } from "@/components/NairaIcon";
 import { PageHeader } from "@/components/PageHeader";
 import { RenderDescription } from "@/components/text-editor/RenderDescription";
 import { productService } from "@/lib/products";
@@ -32,6 +31,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { createCartItemId, useCart } from "@/store/useCart";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 const page = () => {
   const { slug } = useParams();
@@ -56,7 +56,7 @@ const page = () => {
     const fetchProduct = async () => {
       try {
         const data = await productService.getPublicProductDetails(
-          slug as string
+          slug as string,
         );
         setProduct(data);
       } catch (error: any) {
@@ -108,7 +108,7 @@ const page = () => {
     const compositeId = createCartItemId(
       product.id,
       selectedSize,
-      selectedColor
+      selectedColor,
     );
 
     // 1. Update Zustand (Instant UI feedback)
@@ -229,10 +229,11 @@ const page = () => {
               </div>
 
               <h2 className="text-primary font-semibold text-lg md:text-xl mt-2.5">
-                <NairaIcon /> {formatMoneyInput(product.price)}{" "}
+                <CurrencyIcon currency="NGN" />{" "}
+                {formatMoneyInput(product.price)}{" "}
                 {product.compareAtPrice && (
                   <span className="line-through text-muted-foreground font-medium text-base">
-                    <NairaIcon />
+                    <CurrencyIcon currency="NGN" />
                     {formatMoneyInput(product.compareAtPrice)}
                   </span>
                 )}

@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { NairaIcon } from "@/components/NairaIcon";
+
 import { formatMoneyInput, formatDate, formatPhoneNumber } from "@/lib/utils";
 import {
   IconTruckDelivery,
@@ -20,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import Image from "next/image";
 import { TimelineItem } from "../../../_components/TimelineItem";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 // Extended type to include the brandSubtotal we added in the backend
 interface BrandOrder extends Order {
@@ -39,7 +40,7 @@ const page = () => {
       setOrder(res.data);
     } catch (error: any) {
       toast.error(
-        error.response?.data?.message || "Failed to load brand order"
+        error.response?.data?.message || "Failed to load brand order",
       );
     } finally {
       setLoading(false);
@@ -78,13 +79,13 @@ const page = () => {
 
   const brandItems = order.items;
   const isFullyDelivered = brandItems.every(
-    (i: any) => i.status === "DELIVERED"
+    (i: any) => i.status === "DELIVERED",
   );
   const isFullyShipped = brandItems.every(
-    (i: any) => i.status === "SHIPPED" || i.status === "DELIVERED"
+    (i: any) => i.status === "SHIPPED" || i.status === "DELIVERED",
   );
   const isPartiallyShipped = brandItems.some(
-    (i: any) => i.status === "SHIPPED" || i.status === "DELIVERED"
+    (i: any) => i.status === "SHIPPED" || i.status === "DELIVERED",
   );
 
   let brandStatusLabel = "Processing";
@@ -134,7 +135,7 @@ const page = () => {
                       {item.status.toLowerCase()}
                     </Badge>
                     <div className="text-sm font-semibold">
-                      <NairaIcon />{" "}
+                      <CurrencyIcon currency="NGN" />{" "}
                       {formatMoneyInput(Number(item.price) * item.quantity)}
                     </div>
                   </div>
@@ -145,7 +146,8 @@ const page = () => {
                 <div className="flex justify-between font-bold text-base">
                   <span>Your Earnings</span>
                   <span className="text-primary">
-                    <NairaIcon /> {formatMoneyInput(order.brandSubtotal)}
+                    <CurrencyIcon currency="NGN" />{" "}
+                    {formatMoneyInput(order.brandSubtotal)}
                   </span>
                 </div>
                 <p className="text-[10px] text-muted-foreground italic">
@@ -273,8 +275,8 @@ const page = () => {
                   isFullyShipped
                     ? "Items Dispatched"
                     : isPartiallyShipped
-                    ? "Partially Dispatched"
-                    : "Awaiting Dispatch"
+                      ? "Partially Dispatched"
+                      : "Awaiting Dispatch"
                 }
                 // We show the platform date only if this specific brand has started shipping
                 date={isPartiallyShipped ? order.shippedAt : null}

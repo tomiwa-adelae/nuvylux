@@ -16,9 +16,9 @@ import { CartItem, useCart } from "@/store/useCart";
 import { useAuth } from "@/store/useAuth";
 import { toast } from "sonner";
 import React, { useState } from "react";
-import { NairaIcon } from "@/components/NairaIcon";
 import { formatMoneyInput } from "@/lib/utils";
 import { Loader } from "@/components/Loader";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 type Props = {
   open: boolean;
@@ -74,7 +74,7 @@ export const DeleteProductFromCart = ({ open, closeModal, item }: Props) => {
           <div className="flex flex-col">
             <p className="font-semibold leading-tight">{item.name}</p>
             <p className="text-sm text-muted-foreground">
-              <NairaIcon /> {formatMoneyInput(item.price)}
+              <CurrencyIcon currency="NGN" /> {formatMoneyInput(item.price)}
             </p>
             {item.size && (
               <p className="text-xs text-muted-foreground">

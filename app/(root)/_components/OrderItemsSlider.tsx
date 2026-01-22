@@ -3,9 +3,9 @@ import { ImagesSlider } from "@/components/ui/images-slider";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Logo } from "@/components/Logo";
-import { NairaIcon } from "@/components/NairaIcon";
 import { formatMoneyInput } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { CurrencyIcon } from "@/components/CurrencyIcon";
 
 interface OrderItemsSliderProps {
   items: any[];
@@ -47,7 +47,8 @@ export const OrderItemsSlider = ({ items }: OrderItemsSliderProps) => {
 
               <div className="flex items-center gap-4">
                 <div className="text-lg font-medium text-green-400">
-                  <NairaIcon /> {formatMoneyInput(Number(currentItem.price))}
+                  <CurrencyIcon currency="NGN" />{" "}
+                  {formatMoneyInput(Number(currentItem.price))}
                 </div>
                 <div className="h-4 w-[1px] bg-white/30" />
                 <p className="text-muted-foreground">

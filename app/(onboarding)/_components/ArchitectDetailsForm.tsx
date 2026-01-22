@@ -35,6 +35,7 @@ export const ArchitectDetailsForm = () => {
   const form = useForm<ArchitectSchemaType>({
     resolver: zodResolver(ArchitectSchema),
     defaultValues: {
+      businessName: "",
       profession: "",
       yearsOfExperience: "",
       bio: "",
@@ -59,6 +60,19 @@ export const ArchitectDetailsForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="businessName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Business Name</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g. John's Venture" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}

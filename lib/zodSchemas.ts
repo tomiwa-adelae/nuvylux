@@ -271,6 +271,7 @@ export const ChangePasswordSchema = z
   });
 
 export const ArchitectSchema = z.object({
+  businessName: z.string().min(2, "Please enter your business name"),
   profession: z.string().min(2, "Please select your primary profession"),
   yearsOfExperience: z.string().min(1, "Required"),
   bio: z.string().max(300, "Bio must be under 300 characters"),
@@ -301,7 +302,7 @@ export const ServiceSchema = z.object({
 
   deliveryMode: z.enum(["ONLINE", "IN_PERSON", "HYBRID"]),
 
-  duration: z.coerce.number().min(15).optional(), // minutes
+  duration: z.string().optional(), // minutes
 
   deliveryTimeline: z.string().optional(), // "3-5 business days"
 
@@ -309,7 +310,8 @@ export const ServiceSchema = z.object({
 
   revisions: z.string().optional(),
 
-  cancellationPolicy: z.string().max(500).optional(),
+  cancellationPolicy: z.string().optional(),
+  bookingRules: z.string().optional(),
 
   status: z.enum(["DRAFT", "ACTIVE", "PAUSED"]).default("DRAFT"),
 

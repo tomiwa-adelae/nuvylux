@@ -21,7 +21,6 @@ const page = () => {
   const fetchBrandDetails = async () => {
     try {
       const brandDetails = await brandService.getBrandDetails();
-      console.log(brandDetails);
       setBrand(brandDetails);
     } catch (err) {
       console.error("Failed to fetch brand:", err);
@@ -35,8 +34,6 @@ const page = () => {
       fetchBrandDetails();
     }
   }, [user]); // Now it only runs when user state is confirmed
-
-  console.log(brand);
 
   return (
     <div>
